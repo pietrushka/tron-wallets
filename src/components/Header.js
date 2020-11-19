@@ -14,7 +14,7 @@ const HeaderContainer = styled.header`
 
 const HeaderLogo = styled.h1`
   font-size: 2rem;
-  color: var(--gold);
+  color: var(--black);
   text-align: center;
 `
 

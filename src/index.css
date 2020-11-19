@@ -1,5 +1,4 @@
 :root {
-  --gold: #d89628;
   --black: #212529;
   --white: #fff;
 }
@@ -11,7 +10,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--black);
 }
 
 code {
