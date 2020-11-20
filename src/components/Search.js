@@ -4,22 +4,29 @@ import { useAddress } from '../hooks/useAddress'
 import InputGroup from './InputGroup'
 
 export default function Search () {
-  const {addresses, addAddress} = useAddress()
+  const {addresses, addAddress, getAddressesData, isLoading} = useAddress()
 
   const handleAddingAddress = e => {
     e.preventDefault();
     addAddress()
   }
+  
+  const handleSubmit = e => {
+    e.preventDefault();
+    getAddressesData()
+  }
 
   return (
-    <SearchForm>
-      {
-        addresses.map((address, index) => (
-          <InputGroup key={index} address={address} index={index} isTheOnlyAddress={addresses.length === 1 && true}/>
-        ))
-      }
-      <AddInputBtn onClick={handleAddingAddress}>+ Add address</AddInputBtn>
-      <SubmitBtn>Submit</SubmitBtn>
+    <SearchForm onSubmit={handleSubmit}>
+      <FormFieldset disabled={isLoading}>
+        {
+          addresses.map((address, index) => (
+            <InputGroup key={index} address={address} index={index} isTheOnlyAddress={addresses.length === 1 && true}/>
+          ))
+        }
+        <AddInputBtn onClick={handleAddingAddress}>+ Add address</AddInputBtn>
+        <SubmitBtn type='submit'>{!isLoading ?  'Submit' : 'Loading'}</SubmitBtn>
+      </FormFieldset>
     </SearchForm>
   )
 }
@@ -28,10 +35,15 @@ const SearchForm = styled.form`
   margin: 0 auto;
   width: 90%;
   max-width: 350px;
-  display: flex;
-  flex-direction: column;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 1rem;
+`
+
+const FormFieldset = styled.fieldset`
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border: 0;
 `
 
 const AddInputBtn = styled.button`

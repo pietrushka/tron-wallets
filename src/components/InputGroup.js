@@ -3,7 +3,7 @@ import styled from  '@emotion/styled'
 import { useAddress } from '../hooks/useAddress'
 
 export default function InputGroup ({address, index, isTheOnlyAddress}) {
-  const {removeAddress, saveAddress, validAddress} = useAddress()
+  const {removeAddress, updateAddress, validateAddress} = useAddress()
 
   const handleRemovingAddress = e => {
     e.preventDefault();
@@ -11,8 +11,8 @@ export default function InputGroup ({address, index, isTheOnlyAddress}) {
   }
 
   const handleChange = e => {
-    saveAddress(e.target.value, index)
-    validAddress({value: e.target.value, isValid: address.isValid}, index)
+    updateAddress(e.target.value, index)
+    validateAddress({value: e.target.value, isValid: address.isValid}, index)
   }
 
   return (
