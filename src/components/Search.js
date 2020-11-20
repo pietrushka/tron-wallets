@@ -4,7 +4,7 @@ import { useAddress } from '../hooks/useAddress'
 import InputGroup from './InputGroup'
 
 export default function Search () {
-  const {addresses, addAddress, removeAddress} = useAddress()
+  const {addresses, addAddress} = useAddress()
 
   const handleAddingAddress = e => {
     e.preventDefault();
@@ -18,7 +18,7 @@ export default function Search () {
           <InputGroup key={index} address={address} index={index} isTheOnlyAddress={addresses.length === 1 && true}/>
         ))
       }
-      <AddInputBtn onClick={handleAddingAddress}>Add address</AddInputBtn>
+      <AddInputBtn onClick={handleAddingAddress}>+ Add address</AddInputBtn>
       <SubmitBtn>Submit</SubmitBtn>
     </SearchForm>
   )
@@ -33,6 +33,7 @@ const SearchForm = styled.form`
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 1rem;
 `
+
 const AddInputBtn = styled.button`
   font-size: 1.2rem;
   margin: .5em 0;
