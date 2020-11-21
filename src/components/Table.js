@@ -1,52 +1,88 @@
-import {css} from  '@emotion/react'
 import styled from  '@emotion/styled'
+import { useEffect, useState } from 'react'
 
-import { useAddress } from '../hooks/useAddress'
+import sortData from '../lib/sortData'
+import TableHeading from './TableHeading'
 
-export default function Table () {
-  const {accountsData} = useAddress()
+export default function Table ({filteredData}) {
+  const [sortingMethod, setSortingMethod] = useState({field: 'default', direction: null})
+  const [sortedData, setSortedData] = useState(null)
 
-  if(accountsData.length === 0) return (
-    <h2>NO DATA TO DISPLAY</h2>
-  )
+  useEffect(() => {
+    const newSortedData = sortData(sortingMethod, filteredData)
   
-  return (
-    <TableContainer>
+    setSortedData(newSortedData)
+  }, [filteredData, sortingMethod])
+  
+  const handleSorting = (field) => {
+    if(field === sortingMethod.field) {
+      setSortingMethod({
+        field,
+        direction: sortingMethod.direction === 'UP' ? 'DOWN' : 'UP'
+      })
+    } else {
+      setSortingMethod({
+        field,
+        direction: 'UP'
+      })
+    }
+  }
 
-      <StyledTable>
-        <TableHead>
-          <tr>
-            <TableHeading>Address</TableHeading>
-            <TableHeading>Balance</TableHeading>
-            <TableHeading>Created at</TableHeading>
-            <TableHeading>Last operation</TableHeading>
-          </tr>
-        </TableHead>
-        <tbody>
-          {
-            accountsData.map(({address, balance, create_time, latest_opration_time}, idx) => (
-              <TableRow key={idx} index={idx}>
-                <TableData >{address}</TableData >
-                <TableData >{balance}</TableData >
-                <TableData >{create_time}</TableData >
-                <TableData >{latest_opration_time}</TableData >
-              </TableRow>
-            ))
-          }
-        </tbody>
-      </StyledTable>
-    </TableContainer>
+  return (
+    <>
+      {
+        sortedData.length > 0 ? (
+          <TableContainer>
+          <StyledTable>
+            <TableHead>
+              <tr>
+                <TableHeading 
+                  name='Address'
+                  sortingKey='address' 
+                  handler={handleSorting} 
+                  sortingMethod={sortingMethod}
+                />
+                <TableHeading 
+                  name='Balance' 
+                  sortingKey='balance'
+                  handler={handleSorting} 
+                  sortingMethod={sortingMethod}
+                />
+                <TableHeading 
+                  name='Created at' 
+                  sortingKey='create_time'
+                  handler={handleSorting} 
+                  sortingMethod={sortingMethod}
+                />
+                <TableHeading 
+                  name='Last operation' 
+                  sortingKey='latest_opration_time'
+                  handler={handleSorting} 
+                  sortingMethod={sortingMethod}
+                />
+              </tr>
+            </TableHead>
+              <tbody>
+                {
+                  sortedData.map(({address, balance, create_time, latest_opration_time}, idx) => (
+                    <TableRow key={idx} index={idx}>
+                      <TableData >{address}</TableData >
+                      <TableData >{balance}</TableData >
+                      <TableData >{new Intl.DateTimeFormat('en-GB').format(create_time)}</TableData >
+                      <TableData >{new Intl.DateTimeFormat('en-GB').format(latest_opration_time)}</TableData >
+                    </TableRow>
+                  ))
+                }
+              </tbody>
+            </StyledTable>
+          </TableContainer>
+        ) : (
+          <h1>There is nothing to display</h1>
+        )
+      }
+    </>
   )
 }
-
-const CellStyles = css`
-  padding: 0.5rem 1rem;
-  border-right: 1px solid rgb(229, 229, 229);
-  
-  :last-child {
-    border: 0;
-  }
-`
 
 const TableContainer = styled.div`
   overflow-x: auto;
@@ -62,13 +98,7 @@ const StyledTable = styled.table`
 `
 
 const TableHead = styled.thead`
-  background: var(--black);
-  color: var(--white);
   font-weight: 700;
-`
-const TableHeading = styled.th`
-  ${CellStyles}
-  white-space: nowrap;
 `
 
 const TableRow = styled.tr`
@@ -76,5 +106,10 @@ const TableRow = styled.tr`
 `
 
 const TableData = styled.td`
-  ${CellStyles}
+  padding: 0.5rem 1rem;
+  border-right: 1px solid rgb(229, 229, 229);
+  
+  :last-child {
+    border: 0;
+  }
 `

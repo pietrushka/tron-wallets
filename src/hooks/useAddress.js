@@ -1,5 +1,4 @@
 import { useContext, createContext, useState } from 'react'
-import axios from 'axios'
 
 import {checkIsAddressValid, getData} from '../lib/api'
 
@@ -23,17 +22,19 @@ export const AddressProvider = ({ children }) => {
     newAddresses[index] = {value: newValue, isValid: null}
 
     setAddresses(newAddresses)
+
+    validateAddress(newValue, index)
   }
 
-  const validateAddress = async (addressObj, index) => {
-    if (addressObj.value.trim().length === 34 && addressObj.isValid === null) {
+  const validateAddress = async (address, index) => {
+    if (address.length === 34) {
       setIsLoading(true)
       const updatedAdresses = [...addresses]
-      const result = await checkIsAddressValid(addressObj.value)
-      updatedAdresses[index] = {value: addressObj.value, isValid: result}
+      const result = await checkIsAddressValid(address)
+      updatedAdresses[index] = { value: address, isValid: result}
       setAddresses(updatedAdresses)
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   const getAddressesData = async () => {
@@ -45,7 +46,6 @@ export const AddressProvider = ({ children }) => {
 
     const validAddresses = validAddressesData.map(({value}) => value)
     const data = await getData(validAddresses)
-
     setAccountsData(data)
     setIsLoading(false)
   }
@@ -59,7 +59,6 @@ export const AddressProvider = ({ children }) => {
         addAddress,
         removeAddress,
         updateAddress,
-        validateAddress,
         getAddressesData
       }}
     >

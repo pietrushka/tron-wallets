@@ -2,17 +2,21 @@ import styled from  '@emotion/styled'
 
 import { useAddress } from '../hooks/useAddress'
 
-export default function InputGroup ({address, index, isTheOnlyAddress}) {
-  const {removeAddress, updateAddress, validateAddress} = useAddress()
+export default function InputGroup ({address, index, addressesLength}) {
+  const {removeAddress, updateAddress, addAddress} = useAddress()
 
-  const handleRemovingAddress = e => {
+  const handleAddingAddress = e => {
+    e.preventDefault();
+    addAddress()
+  }
+
+  const handleAddressRemoving = e => {
     e.preventDefault();
     removeAddress(index)
   }
 
   const handleChange = e => {
     updateAddress(e.target.value, index)
-    validateAddress({value: e.target.value, isValid: address.isValid}, index)
   }
 
   return (
@@ -27,11 +31,14 @@ export default function InputGroup ({address, index, isTheOnlyAddress}) {
           value={address.value}
           onChange={handleChange}
           isValid={address.isValid}
-          roundRight={isTheOnlyAddress}
+          roundRight={addressesLength === 1}
         >
         </Input> 
         {
-          !isTheOnlyAddress && <RemoveBtn onClick={handleRemovingAddress}>X</RemoveBtn> 
+          addressesLength > 1 && <RemoveBtn onClick={handleAddressRemoving}>X</RemoveBtn> 
+        }
+        {
+          addressesLength === index + 1 && <AddInputButton onClick={handleAddingAddress}>+</AddInputButton>
         }
       </InputContainer>
   )
@@ -53,7 +60,7 @@ const IsValidLabel = styled.label`
   top: -1.25rem;
   font-size: 1rem;
   left: .5rem;
-  color: ${({isValid}) => isValid ? 'green' : 'red'}
+  color: ${({isValid}) => isValid ? 'green' : 'red'};
 `
 
 const Input = styled.input`
@@ -77,6 +84,23 @@ const RemoveBtn = styled.button`
   padding: 0 0.75em;
   color: var(--black);
   font-weight: bold;
+  outline: 0;
+  cursor: pointer;
+`
+
+const AddInputButton = styled.button`
+  position: absolute;
+  font-weight: 700;
+  left: .5rem;
+  font-size: 1.5rem;
+  bottom: -1.3em;
+  line-height: 1em;
+  padding: .1em .75em;
+  border-color: var(--black);
+  border-style: solid;
+  border-width: 0 .1em .1em .1em;
+  background: var(--white);
+  border-radius: 0 0 0.25em .25em;
   outline: 0;
   cursor: pointer;
 `

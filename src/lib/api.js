@@ -13,38 +13,27 @@ export const checkIsAddressValid = async (address) => {
 }
 
 export const getData = async (validAddresses) => {
-  const newValidAddresses = [...validAddresses]
   let data = []
 
-  // resolves up to 6 promises, prevents from api error 
-  for (let i = newValidAddresses.length; i > 0; i -= 6) {
-    const addressesToHandle = newValidAddresses.splice(0, 6)
-    const requests = addressesToHandle.map(async (address) => {
-      let body = JSON.stringify({address, visible: true})
-      const {data} = await axios.post('https://api.trongrid.io/wallet/getaccount', body)
-      const {balance, create_time, latest_opration_time} = data 
-      return {
-        address, 
-        balance, 
-        create_time: formatDate(create_time), 
-        latest_opration_time: formatDate(latest_opration_time)
-      }
-    })
-
-    try {
-      await Promise.all(requests).then((values) => {
-        data = [...data, ...values]
-      })
-    } catch (err) {
-      console.error(err)
-    }
+  const reqApi = async (address) => {
+    const body = await JSON.stringify({address, visible: true})
+    const res = await axios.post('https://api.trongrid.io/wallet/getaccount', body)
+    const {balance, create_time, latest_opration_time} = res.data 
+    const resData = {address, balance, create_time, latest_opration_time}
+    if(resData.balance === undefined) resData.balance = 0
+    return resData
   }
 
+  const requests = validAddresses.map((address) => reqApi(address))
+
+  try {
+    await Promise.all(requests).then((values) => {
+      data = [...data, ...values]
+    })
+  } catch (err) {
+      console.error(err)
+  }
+  
   return data
 }
 
-const formatDate = (data) => {
-  const date = new Date(data)
-  const dateString = date.toLocaleDateString('en-EN')
-  return dateString
-}
