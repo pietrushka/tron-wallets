@@ -1,9 +1,15 @@
+import {useRef, useEffect} from 'react'
 import styled from  '@emotion/styled'
 
 import { useAddress } from '../hooks/useAddress'
 
 export default function InputGroup ({address, index, addressesLength}) {
   const {removeAddress, updateAddress, addAddress} = useAddress()
+  const inputRef = useRef()
+
+  useEffect(() => {
+    if(index + 1 === addressesLength) inputRef.current.focus()
+  }, [])
 
   const handleAddingAddress = e => {
     e.preventDefault();
@@ -32,8 +38,8 @@ export default function InputGroup ({address, index, addressesLength}) {
           onChange={handleChange}
           isValid={address.isValid}
           roundRight={addressesLength === 1}
-        >
-        </Input> 
+          ref={inputRef}
+        />
         {
           addressesLength > 1 && <RemoveBtn onClick={handleAddressRemoving}>X</RemoveBtn> 
         }

@@ -56,26 +56,40 @@ const filterReducer = (draft, action) =>  {
 }
 
 export default function Presentation () {
-  const {accountsData} = useAddress()
+  const {accountsData, isLoading} = useAddress()
   const [filteredData, setFilteredData] = useState(accountsData)
   const [filterConfig, dispatch] = useImmerReducer(filterReducer, initialConfig)
   
   useEffect(() => {
+    if(accountsData === null) return
     const filteredData = filterData(filterConfig, accountsData)
     setFilteredData(filteredData)
   }, [accountsData, filterConfig])
   
   return (
-    <>
-      {
-        accountsData.length > 0 && (
-          <PresentationContainer>
-            <Filter filterConfig={filterConfig} dispatch={dispatch}/>
-            <Table filteredData={filteredData}/>
-          </PresentationContainer>
-        )
-      }
-    </>
+      <PresentationContainer>
+        {
+          isLoading ? (
+            <SpinnerOverlay>
+              <Spinner/>
+            </SpinnerOverlay>
+          ) : accountsData !== null && (
+            <>
+              {
+                accountsData.length > 0  
+                ? (
+                  <>
+                    <Filter filterConfig={filterConfig} dispatch={dispatch}/>
+                    <Table filteredData={filteredData}/>
+                  </>
+                ) : (
+                <NoDataHeading>No data to display</NoDataHeading>
+                )
+              }
+            </>
+          )
+        }
+    </PresentationContainer>
   )
 }
 
@@ -85,4 +99,39 @@ const PresentationContainer = styled.div`
   min-height: 50vh;
   padding: .75rem;
   box-sizing: border-box;
+`
+
+const SpinnerOverlay = styled.div`
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Spinner = styled.div`
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: 10px solid rgba(195, 195, 195, 0.6);
+  border-radius: 50%;
+  border-top-color: #636767;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+`
+
+export const NoDataHeading = styled.h2`
+  font-size: 1.25rem;
+  margin-top: 2em;
+  text-align: center;
 `

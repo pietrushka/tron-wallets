@@ -233,9 +233,4 @@ const ClearButton = styled.button`
   outline: 0;
   align-self: center;
   max-width: 200px;
-
-  @media (min-width: 700px) {
-    align-self: flex-end;
-    margin-right: 1rem;
-  }
 `

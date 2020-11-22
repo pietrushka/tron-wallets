@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import sortData from '../lib/sortData'
 import TableHeading from './TableHeading'
+import {NoDataHeading} from './Presentation'
 
 export default function Table ({filteredData}) {
   const [sortingMethod, setSortingMethod] = useState({field: 'default', direction: null})
@@ -33,7 +34,7 @@ export default function Table ({filteredData}) {
       {
         sortedData === null || sortedData.length === 0 
         ? (
-          <h1>There is nothing to display</h1>
+          <NoDataHeading>There is nothing to display</NoDataHeading>
         ) 
         : (
           <TableContainer>

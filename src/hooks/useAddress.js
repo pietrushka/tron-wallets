@@ -1,15 +1,15 @@
 import { useContext, createContext, useState } from 'react'
 
-import {checkIsAddressValid, getData} from '../lib/api'
+import {validateAddresses, getData} from '../lib/api'
 
 const AddressContext = createContext()
 
 export const AddressProvider = ({ children }) => {
   const [addresses, setAddresses] = useState([{value: '', isValid: null}])
-  const [accountsData, setAccountsData] = useState([])
+  const [accountsData, setAccountsData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const addAddress = () => setAddresses(addresses => [...addresses, {value: '', isValid: null}])
+  const addAddress = () => setAddresses([...addresses, {value: '', isValid: null}])
 
   const removeAddress = (index) => {
     const filteredAddresses = addresses.filter((address, addressIdx) => addressIdx !== index)
@@ -22,31 +22,25 @@ export const AddressProvider = ({ children }) => {
     newAddresses[index] = {value: newValue, isValid: null}
 
     setAddresses(newAddresses)
-
-    validateAddress(newValue, index)
-  }
-
-  const validateAddress = async (address, index) => {
-    if (address.length === 34) {
-      setIsLoading(true)
-      const updatedAdresses = [...addresses]
-      const result = await checkIsAddressValid(address)
-      updatedAdresses[index] = { value: address, isValid: result}
-      setAddresses(updatedAdresses)
-      setIsLoading(false)
-    }
   }
 
   const getAddressesData = async () => {
     setIsLoading(true) 
 
-    const validAddressesData = addresses.filter(({isValid}) => isValid === true)
+    const validatedAddressesData = await validateAddresses(addresses)
 
-    if (validAddressesData.length === 0) return setIsLoading(false)
+    const validAddressesData = validatedAddressesData.filter(({isValid}) => isValid === true)
 
-    const validAddresses = validAddressesData.map(({value}) => value)
-    const data = await getData(validAddresses)
-    setAccountsData(data)
+    if (validAddressesData.length > 0) {
+      const validAddresses = validAddressesData.map(({value}) => value)
+      const data = await getData(validAddresses)
+      setAccountsData(data)
+    } else {
+      setAccountsData([])
+    }
+
+    
+    setAddresses(validatedAddressesData)
     setIsLoading(false)
   }
 

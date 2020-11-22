@@ -49,9 +49,9 @@ const SubmitBtn = styled.button`
   align-self: center;
   margin-top: 1.5em;
   padding: .15em .25em;
-  border: 0.15em solid var(--black);
+  border: 0.15em solid var(--blue);
   background: var(--white);
-  color: var(--black);
+  color: var(--blue);
   border-radius: .5em;
   cursor: pointer;
   outline: 0;
