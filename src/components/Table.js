@@ -72,7 +72,7 @@ export default function Table ({filteredData}) {
                   sortedData.map(({address, balance, create_time, latest_opration_time}, idx) => (
                     <TableRow key={idx} index={idx}>
                       <TableData >{address}</TableData >
-                      <TableData >{balance}</TableData >
+                      <TableData >{balance} TRX</TableData >
                       <TableData >{new Intl.DateTimeFormat('en-GB').format(create_time)}</TableData >
                       <TableData >{new Intl.DateTimeFormat('en-GB').format(latest_opration_time)}</TableData >
                     </TableRow>
