@@ -1,16 +1,12 @@
 <p align="center">
   <h3 align="center">Example TRON Wallet</h3>
-
-  <p align="center">
-    TRON Wallet allows users to search for wallet data by address.
-    <br />
-    <br />
-  </p>
 </p>
 
 ### Built With
 * [React](https://reactjs.org/)
 * [Emotion](https://emotion.sh/docs/introduction)
+* [use-immer](https://github.com/immerjs/use-immer)
+* [react-datepicker](https://reactdatepicker.com/)
 
 ### Getting started
 

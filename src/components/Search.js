@@ -32,10 +32,8 @@ export default function Search () {
 
 const SearchForm = styled.form`
   margin: 0 auto;
-  width: 90%;
-  max-width: 435px;
+  width: 100%;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  padding: 1rem;
 `
 
 const FormFieldset = styled.fieldset`
@@ -43,6 +41,7 @@ const FormFieldset = styled.fieldset`
   flex-direction: column;
   margin: 0;
   border: 0;
+  padding: 1rem .75rem;
 `
 
 const SubmitBtn = styled.button`

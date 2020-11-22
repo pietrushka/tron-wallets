@@ -31,7 +31,11 @@ export default function Table ({filteredData}) {
   return (
     <>
       {
-        sortedData.length > 0 ? (
+        sortedData === null || sortedData.length === 0 
+        ? (
+          <h1>There is nothing to display</h1>
+        ) 
+        : (
           <TableContainer>
           <StyledTable>
             <TableHead>
@@ -76,8 +80,6 @@ export default function Table ({filteredData}) {
               </tbody>
             </StyledTable>
           </TableContainer>
-        ) : (
-          <h1>There is nothing to display</h1>
         )
       }
     </>
@@ -86,8 +88,7 @@ export default function Table ({filteredData}) {
 
 const TableContainer = styled.div`
   overflow-x: auto;
-  width: 90%;
-  margin: 2rem auto;
+  margin: 1rem auto;
 `
 
 const StyledTable = styled.table`
@@ -95,6 +96,11 @@ const StyledTable = styled.table`
   border-spacing: 0;
   text-align: left;
   border-spacing: 0;
+  font-size: 1rem;
+
+  @media (min-width: 925px) {
+    font-size: 1.25rem;
+  }
 `
 
 const TableHead = styled.thead`

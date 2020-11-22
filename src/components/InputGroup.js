@@ -53,6 +53,7 @@ const InputContainer = styled.div`
   font-size: 1.1rem;
   align-self: center;
   width: 100%;
+  max-width: 445px;
 `
 
 const IsValidLabel = styled.label`
@@ -70,7 +71,7 @@ const Input = styled.input`
   padding: 0.2em 0.5em;
   color: var(--black);
   outline: 0;
-  width: 90%;
+  width: 100%;
   background: var(--white)
   z-index: 2;
 `

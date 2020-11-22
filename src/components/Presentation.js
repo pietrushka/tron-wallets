@@ -81,7 +81,8 @@ export default function Presentation () {
 
 const PresentationContainer = styled.div`
   margin: 0 auto;
-  width: 90%;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  padding: 1rem;
+  max-width: 1000px;
+  min-height: 50vh;
+  padding: .75rem;
+  box-sizing: border-box;
 `

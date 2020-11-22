@@ -24,6 +24,7 @@ export default function TableHeading ({name, sortingKey, handler, sortingMethod}
 const TableHeadingContainer = styled.th`
   button {
     display: flex;
+    font-size: inherit;
     background: var(--black);
     color: var(--white);
     width: 100%;
@@ -46,5 +47,5 @@ const SortingArrow = styled.span`
   font-size: .5em;
   display: block;
   font-weight: 700;
-  ${({currentSorting}) => currentSorting && 'color: var(--red);'}
+  ${({currentSorting}) => currentSorting && 'color: var(--blue);'}
 `
